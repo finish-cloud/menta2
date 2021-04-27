@@ -58,12 +58,10 @@ def main():
     # ページ終了まで繰り返し取得
     exp_name_list = []
     # 検索結果の一番上の会社名を取得
-    name_list = driver.find_elements_by_class_name("cassetteRecruit__name")
-
+    copy_list = driver.find_elements_by_class_name("cassetteRecruit__copy")
     # 1ページ分繰り返し
-    print(len(name_list))
-    for name in name_list:
-        exp_name_list.append(name.text)
+    print(len(copy_list))
+    for name in copy_list:
         print(name.text)
 
 
