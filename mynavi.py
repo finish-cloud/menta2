@@ -1,5 +1,6 @@
 import os
 from selenium.webdriver import Chrome, ChromeOptions
+from selenium.webdriver.chrome.webdriver import WebDriver
 import time
 import pandas as pd
 
