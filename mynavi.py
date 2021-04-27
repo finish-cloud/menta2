@@ -29,6 +29,13 @@ def set_driver(driver_path, headless_flg):
 # main処理
 
 
+def find_table_target_word(th_elms, td_elms, target: str):
+    # tableのthからtargetの文字列を探し一致する行のtdを返す
+    for th_elm, td_elm in zip(th_elms, td_elms):
+        if th_elm.text == target:
+            return td_elm.text
+
+
 def main():
     search_keyword = "高収入"
     # driverを起動
@@ -57,12 +64,35 @@ def main():
 
     # ページ終了まで繰り返し取得
     exp_name_list = []
+    exp_copy_list = []
+    exp_status_list = []
+    exp_first_year_fee_list = []
     # 検索結果の一番上の会社名を取得
-    copy_list = driver.find_elements_by_class_name("cassetteRecruit__copy")
+    name_list = driver.find_elements_by_css_selector(
+        ".cassetteRecruit__heading .cassetteRecruit__name")
+    copy_list = driver.find_elements_by_css_selector(
+        ".cassetteRecruit__heading .cassetteRecruit__copy")
+    status_list = driver.find_elements_by_css_selector(
+        ".cassetteRecruit__heading .labelEmploymentStatus")
+    table_list = driver.find_elements_by_css_selector(
+        ".cassetteRecruit .tableCondition")  # 初年度年収
     # 1ページ分繰り返し
+    print(len(name_list))
     print(len(copy_list))
-    for name in copy_list:
+    print(len(status_list))
+    print(len(table_list))
+    for name, copy, status, table in zip(name_list, copy_list, status_list, table_list):
+        exp_name_list.append(name.text)
+        exp_copy_list.append(copy.text)
+        exp_status_list.append(status.text)
+        # 初年度年収をtableから探す
+        first_year_fee = find_table_target_word(table.find_elements_by_tag_name(
+            "th"), table.find_elements_by_tag_name("td"), "初年度年収")
+        exp_first_year_fee_list.append(first_year_fee)
         print(name.text)
+        print(copy.text)
+        print(status.text)
+        print(first_year_fee)
 
 
 # 直接起動された場合はmain()を起動(モジュールとして呼び出された場合は起動しないようにするため)
