@@ -37,7 +37,7 @@ def find_table_target_word(th_elms, td_elms, target: str):
 
 
 def main():
-    search_keyword = "高収入"
+    search_keyword = input("検索キーワードを入力してください：")
     # driverを起動
     if os.name == 'nt':  # Windows
         driver = set_driver("chromedriver.exe", False)
