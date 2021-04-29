@@ -2,6 +2,7 @@ import os
 from selenium.webdriver import Chrome, ChromeOptions
 from selenium.webdriver.chrome.webdriver import WebDriver
 import time
+import datetime
 import pandas as pd
 
 # Chromeを起動する関数
@@ -89,10 +90,15 @@ def main():
         first_year_fee = find_table_target_word(table.find_elements_by_tag_name(
             "th"), table.find_elements_by_tag_name("td"), "初年度年収")
         exp_first_year_fee_list.append(first_year_fee)
-        print(name.text)
-        print(copy.text)
-        print(status.text)
-        print(first_year_fee)
+# CSV出力
+    now = datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
+    df = pd.DataFrame({"企業名": exp_name_list,
+                       "キャッチコピー": exp_copy_list,
+                       "ステータス": exp_status_list,
+                       "初年度年収": exp_first_year_fee_list})
+
+    df.to_csv('求人情報.csv', index=False)
+    driver.quit()
 
 
 # 直接起動された場合はmain()を起動(モジュールとして呼び出された場合は起動しないようにするため)
